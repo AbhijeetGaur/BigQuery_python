@@ -1,0 +1,23 @@
+import sys
+sys.path.insert(0, 'libs')
+from apiclient.discovery import build
+import logging
+import httplib2
+from oauth2client.appengine import AppAssertionCredentials
+import json
+
+PROJECT_NUMBER = '###################'
+credentials = AppAssertionCredentials(scope='https://www.googleapis.com/auth/bigquery')
+http = credentials.authorize(httplib2.Http())
+service = build('bigquery', 'v2', http=http)
+jobRunner = service.jobs()
+reply = jobRunner.query(projectId=PROJECT_NUMBER,body={"kind": "bigquery#queryRequest",
+                                                       "useQueryCache": True, 
+                                                       "defaultDataset": {
+                                                                          "projectId": "##################",
+                                                                          "datasetId": "##############",
+                                                                          },
+                                                       "maxResults": #######,
+                                                       "query": "SELECT * FROM [project-id:dataset-id.table-name]",
+                                                       }).execute()
+print json.dumps(reply, sort_keys=True, indent=2)

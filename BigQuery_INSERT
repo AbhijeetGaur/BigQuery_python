@@ -1,0 +1,36 @@
+from apiclient.discovery import build
+import httplib2
+from oauth2client.appengine import AppAssertionCredentials
+import logging
+from com.test.interfaces import BigQuery
+
+credentials = AppAssertionCredentials(scope='https://www.googleapis.com/auth/bigquery')
+http = credentials.authorize(httplib2.Http())
+service = build('bigquery', 'v2', http=http)
+
+j={
+    'kind': 'bigquery#insertRequest',
+    'jobReference': {'projectId': '###################'},
+    'configuration': {
+        'load': {
+                       
+            'sourceFormat': 'CSV',
+            'destinationTable': {'projectId': '####################',
+                                 'tableId': '#######################',
+                                 'datasetId': '####################'},
+           
+            'allowJaggedRows': True,
+            
+            'sourceUris': ['gs://bubket_name/file_name'],
+            'skipLeadingRows': 1,
+            'schema': {'fields': [
+                                   {'type':'DataType','name':'col_name','mode':'REQUIRED/NULLABLE'}
+                                 ]
+                       },
+            },
+        },
+    }
+
+
+response = service.jobs().insert(projectId = "####################",body = j).execute()
+logging.info(response)

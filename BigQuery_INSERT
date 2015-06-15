@@ -21,7 +21,7 @@ j={
            
             'allowJaggedRows': True,
             
-            'sourceUris': ['gs://bubket_name/file_name'],
+            'sourceUris': ['gs://bucket_name/file_name'],
             'skipLeadingRows': 1,
             'schema': {'fields': [
                                    {'type':'DataType','name':'col_name','mode':'REQUIRED/NULLABLE'}
